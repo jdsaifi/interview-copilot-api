@@ -52,6 +52,8 @@ class AuthController {
             path: '/'
         };
 
+        console.log('cookieOptions: ', cookieOptions);
+
         res.cookie('access_token', response.access_token, cookieOptions);
         res.success(StatusCodes.OK, response);
     }
