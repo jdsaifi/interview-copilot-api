@@ -47,7 +47,7 @@ class AuthController {
         const cookieOptions: CookieOptions = {
             httpOnly: true,
             secure: config.env === 'production',
-            // domain: config.env === 'production' ? config.domain : undefined,
+            domain: config.env === 'production' ? config.domain : undefined,
             sameSite: 'lax',
             path: '/'
         };
