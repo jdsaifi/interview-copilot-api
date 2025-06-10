@@ -34,3 +34,12 @@ export const validateDeleteDocumentSchema = z.object({
         document_id: z.string().min(24).max(24)
     })
 });
+
+export const validateUpdateInterviewTranscriptSchema = z.object({
+    params: z.object({
+        interview_id: z.string().min(24).max(24)
+    }),
+    body: z.object({
+        transcript: z.string()
+    })
+});

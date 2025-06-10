@@ -58,6 +58,17 @@ const documentSchema = new mongoose.Schema({
     }
 });
 
+const transcriptSchema = new mongoose.Schema({
+    role: {
+        type: String,
+        default: null
+    },
+    text: {
+        type: String,
+        default: null
+    }
+});
+
 const interviewSchema = new mongoose.Schema(
     {
         job_title: {
@@ -95,6 +106,14 @@ const interviewSchema = new mongoose.Schema(
         documents: {
             type: [documentSchema],
             default: []
+        },
+        transcript: {
+            type: [transcriptSchema],
+            default: []
+        },
+        LLMFeedback: {
+            type: String,
+            default: null
         },
         user_id: {
             type: mongoose.Schema.Types.ObjectId,

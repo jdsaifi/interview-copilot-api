@@ -6,7 +6,8 @@ import {
     validateCreateInterviewSchema,
     validateGetInterviewByIdSchema,
     validateUpdateInterviewSchema,
-    validateDeleteDocumentSchema
+    validateDeleteDocumentSchema,
+    validateUpdateInterviewTranscriptSchema
 } from '../validations/interview_validation';
 import asyncHandler from '../utils/async_handler';
 import InterviewController from '../controllers/interview_controller';
@@ -80,6 +81,22 @@ router.delete(
     authorizeRequest,
     validateRequest(validateDeleteDocumentSchema),
     asyncHandler(InterviewController.deleteInterviewDocument)
+);
+
+// get interview by id route (public)
+router.get(
+    '/public/interviews/:interview_id',
+    // authorizeRequest,
+    validateRequest(validateGetInterviewByIdSchema),
+    asyncHandler(InterviewController.getInterviewById)
+);
+
+// update interview transcript route (public)
+router.put(
+    '/public/interviews/:interview_id/transcript',
+    // authorizeRequest,
+    validateRequest(validateUpdateInterviewTranscriptSchema),
+    asyncHandler(InterviewController.updateInterviewTranscript)
 );
 
 export default router;

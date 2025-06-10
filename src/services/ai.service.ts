@@ -222,4 +222,55 @@ export class AIService {
 
         // return questions.slice(0, 15); // Ensure we only return 15 questions
     }
+
+    async generateInterviewFeedback(transcript: string): Promise<string> {
+        const prompt = this.buildFeedbackPrompt(transcript);
+
+        try {
+            const openai = new OpenAI({
+                baseURL: 'https://openrouter.ai/api/v1',
+                apiKey: this.OPENROUTER_API_KEY
+            });
+
+            const response: any = await openai.chat.completions.create({
+                model: 'google/gemini-flash-1.5',
+                messages: [
+                    {
+                        role: 'user',
+                        content: prompt
+                    }
+                ],
+                response_format: { type: 'json_object' }
+            });
+
+            if ('error' in response) {
+                throw new Error(response?.error?.message || 'Unknown error');
+            }
+
+            const jsonResponse = JSON.parse(
+                response.choices[0].message.content
+            );
+
+            return jsonResponse['feedback'];
+        } catch (error) {
+            console.error('Error generating interview feedback:', error);
+            throw new Error('Failed to generate interview feedback');
+        }
+    }
+
+    private buildFeedbackPrompt(transcript: string): string {
+        return `Generate a feedback for the following interview transcript:
+        ${transcript}
+
+        Format the feedback as a JSON object with the following structure:
+        {
+            "feedback": string
+        }
+
+        Ensure that:
+        1. The feedback is relevant to the interview transcript
+        2. The feedback is concise and to the point
+        3. The feedback is helpful for the candidate to improve their skills
+        4. The response is valid JSON format`;
+    }
 }

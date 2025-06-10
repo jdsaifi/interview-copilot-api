@@ -175,6 +175,38 @@ class InterviewService {
             });
         }
     }
+
+    async updateTranscript(interviewId: string, transcript: string) {
+        try {
+            const interview = await Interview.findByIdAndUpdate(
+                interviewId,
+                { $set: { transcript } },
+                { new: true }
+            );
+            return interview;
+        } catch (error) {
+            throw new ApiError({
+                httpCode: 400,
+                description: 'Failed to update transcript'
+            });
+        }
+    }
+
+    async updateLLMFeedback(interviewId: string, LLMFeedback: string) {
+        try {
+            const interview = await Interview.findByIdAndUpdate(
+                interviewId,
+                { $set: { LLMFeedback } },
+                { new: true }
+            );
+            return interview;
+        } catch (error) {
+            throw new ApiError({
+                httpCode: 400,
+                description: 'Failed to update transcript'
+            });
+        }
+    }
 }
 
 export default InterviewService;

@@ -6,6 +6,8 @@ import DocumentParser from '../utils/document_parser';
 import fs from 'fs';
 import { promisify } from 'util';
 import { IDocument } from '../models/interviews_model';
+import { AIService } from '../services/ai.service';
+import Logger from '../utils/logger';
 
 const unlinkAsync = promisify(fs.unlink);
 
@@ -159,6 +161,35 @@ class InterviewController {
                 'Failed to delete document'
             );
         }
+    }
+
+    static async updateInterviewTranscript(req: Request, res: Response) {
+        const { interview_id } = req.payload.params;
+        const { transcript } = req.payload.body;
+
+        const data = JSON.parse(transcript);
+
+        const interviewService = new InterviewService();
+        const interview = await interviewService.updateTranscript(
+            interview_id,
+            data
+        );
+
+        // save interview feedback by LLM
+        const aiService = new AIService();
+        const feedback = await aiService.generateInterviewFeedback(transcript);
+        interviewService
+            .updateLLMFeedback(interview_id, feedback)
+            .then(() => {
+                Logger.info('interview feedback updated');
+            })
+            .catch((error) => {
+                Logger.error(
+                    `error updating interview feedback: ${error.message}`,
+                    error
+                );
+            });
+        return res.success(StatusCodes.OK, interview);
     }
 }
 
