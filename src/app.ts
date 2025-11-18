@@ -16,7 +16,11 @@ const app: Express = express();
 
 // Basic setup: Allow all origins (good for development)
 const corsOptions = {
-    origin: ['http://localhost:3000', 'https://interviews.mindsharpner.com'],
+    origin: [
+        'http://localhost:3000',
+        'https://admin.colloquis.ai',
+        'https://demo.colloquis.ai/'
+    ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'], // Specify allowed methods
     allowedHeaders: ['Content-Type', 'Authorization'] // Specify allowed headers
