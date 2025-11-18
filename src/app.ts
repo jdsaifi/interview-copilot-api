@@ -19,7 +19,7 @@ const corsOptions = {
     origin: [
         'http://localhost:3000',
         'https://admin.colloquis.ai',
-        'https://demo.colloquis.ai/'
+        'https://demo.colloquis.ai'
     ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'], // Specify allowed methods
